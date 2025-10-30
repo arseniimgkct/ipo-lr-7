@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "\u041c\u0438\u043d\u0441\u043a",
+        "country": "\u0411\u0435\u043b\u0430\u0440\u0443\u0441\u044c",
+        "people_count": 10000000,
+        "is_big": true
+    },
+    {
+        "id": 2,
+        "name": "\u041c\u043e\u0441\u043a\u0432\u0430",
+        "country": "\u0420\u043e\u0441\u0441\u0438\u044f",
+        "people_count": 5555555,
+        "is_big": true
+    },
+    {
+        "id": 3,
+        "name": "Lorem",
+        "country": "Ipsum",
+        "people_count": 10,
+        "is_big": false
+    },
+    {
+        "id": 4,
+        "name": "Washington DC",
+        "country": "USA",
+        "people_count": 500000000000,
+        "is_big": true
+    },
+    {
+        "id": 5,
+        "name": "Berlin",
+        "country": "Germany",
+        "people_count": 9000000,
+        "is_big": true
+    }
+]

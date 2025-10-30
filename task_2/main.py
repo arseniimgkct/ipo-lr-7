@@ -3,7 +3,7 @@ import json
 
 print("start code ...")
 
-qualification = input("Введите номер квалификации: ")
+qualif_number = input("Введите номер квалификации: ")
 
 with open("dump.json", encoding="utf-16") as file:
     data = json.load(file)
@@ -15,10 +15,12 @@ for item in data:
         fields = item.get("fields", {})
         code =  fields.get("code")
 
-        if code == qualification:
+        if code == qualif_number:
             print(' Найдено '.center(40,"="))
-            ctype = ', ' + fields.get("c_type") if fields.get("c_type") != None else ""
-            print(f'{code} >> Специальность {fields.get("title")}{ctype} ')
+            ctype = fields.get("c_type")
+            ctype = ', ' + ctype if ctype != None else ""
+            qualif = "Специальность" if model == "data.specialty" else "Квалификация"
+            print(f'{code} >> {qualif} "{fields.get("title")}"{ctype} ')
             found = True
 
 if not found:
