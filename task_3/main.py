@@ -30,17 +30,62 @@ menu = """
 5. Выйти из программы
 """
 
+def open_file():
+    if not os.path.exists("db.json"):
+        with open("db.json", "w", encoding="utf-8") as f:
+            f.write("[]")
+
+    with open("db.json", "r", encoding="utf-8") as file:
+        try:
+            data = json.load(file)
+        except:
+            data = []
+            
+    return data
+
+def output_cities():
+    print("Список Городов".center(40, "-"))
+    for city in data:
+        print(f'{city["id"]}. {city["name"]}, {city["country"]} - {city["people_count"]} | {"Большой" if city["is_big"] else "Небольшой"}')
+
+def output_city_by_id():
+    city_id = int(input("Введите id для поиска:"))
+    for city in data:
+        if city_id == city["id"]:
+            print(f'{city["id"]}. {city["name"]}, {city["country"]} - {city["people_count"]} | {"Большой" if city["is_big"] else "Небольшой"}')
+            break
+    else:
+        print("Не найден город с таким id")        
+
+def add_city():
+    name = input("Введите название города: ")
+    country = input("Введите страну: ")
+    people_count = int(input("Введите численность населения: "))
+            
+    id = data[-1]["id"] + 1 if data else 1                
+    city = City(id, name, country, people_count)
+    data.append(city.to_dict())
+    with open("db.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+    print("Город успешно добавлен")
+
+def delete_city():
+    city_id = int(input("Введите id города: "))
+    for i in range(0, len(data)):
+        if data[i]["id"] == city_id:
+            del data[i]
+            break
+    else:
+        print("Город с таким id не найден")
+        return
+            
+    with open("db.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+        print("Город успешно удален")
+
 actions = 0
 
-if not os.path.exists("db.json"):
-    with open("db.json", "w", encoding="utf-8") as f:
-        f.write("[]")
-
-with open("db.json", "r", encoding="utf-8") as file:
-    try:
-        data = json.load(file)
-    except:
-        data = []
+data = open_file()
 
 while True:
     print(menu)
@@ -52,45 +97,13 @@ while True:
             if not data:
                 print("Список пуст")
                 continue
-            print("Список Городов".center(40, "-"))
-            for city in data:
-                print(f'{city["id"]}. {city["name"]}, {city["country"]} - {city["people_count"]} | {"Большой" if city["is_big"] else "Небольшой"}')
-
+            output_cities()
         case 2:
-            city_id = int(input("Введите id для поиска:"))
-            for city in data:
-                if city_id == city["id"]:
-                    print(f'{city["id"]}. {city["name"]}, {city["country"]} - {city["people_count"]} | {"Большой" if city["is_big"] else "Небольшой"}')
-                    break
-            else:
-                print("Не найден город с таким id")        
-                
+            output_city_by_id()
         case 3:
-            name = input("Введите название города: ")
-            country = input("Введите страну: ")
-            people_count = int(input("Введите численность населения: "))
-            
-            id = data[-1]["id"] + 1 if data else 1                
-            city = City(id, name, country, people_count)
-            data.append(city.to_dict())
-            with open("db.json", "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=4)
-            print("Город успешно добавлен")
-            
+            add_city()
         case 4:
-            city_id = int(input("Введите id города: "))
-            for i in range(0, len(data)):
-                if data[i]["id"] == city_id:
-                    del data[i]
-                    break
-            else:
-                print("Город с таким id не найден")
-                continue
-            
-            with open("db.json", "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2)
-            print("Город успешно удален")
-                
+            delete_city()
         case 5:
             print(f'Выполнено операций: {actions}')
             break
