@@ -30,6 +30,8 @@ menu = """
 5. Выйти из программы
 """
 
+
+
 def open_file():
     if not os.path.exists("db.json"):
         with open("db.json", "w", encoding="utf-8") as f:
@@ -49,7 +51,11 @@ def output_cities():
         print(f'{city["id"]}. {city["name"]}, {city["country"]} - {city["people_count"]} | {"Большой" if city["is_big"] else "Небольшой"}')
 
 def output_city_by_id():
-    city_id = int(input("Введите id для поиска:"))
+    try:
+        city_id = int(input("Введите id для поиска:"))
+    except:
+        print("Invalid id")
+        return
     for city in data:
         if city_id == city["id"]:
             print(f'{city["id"]}. {city["name"]}, {city["country"]} - {city["people_count"]} | {"Большой" if city["is_big"] else "Небольшой"}')
@@ -58,10 +64,19 @@ def output_city_by_id():
         print("Не найден город с таким id")        
 
 def add_city():
-    name = input("Введите название города: ")
-    country = input("Введите страну: ")
-    people_count = int(input("Введите численность населения: "))
-            
+    name = ""
+    country = ""
+    while(len(name) == 0):
+        name = input("Введите название города: ").strip()
+    while(len(country) == 0):
+        country = input("Введите страну: ").strip()
+        
+    try:
+        people_count = int(input("Введите численность населения: "))
+    except:
+        print("Invalid people count")
+        return
+              
     id = data[-1]["id"] + 1 if data else 1                
     city = City(id, name, country, people_count)
     data.append(city.to_dict())
@@ -70,7 +85,11 @@ def add_city():
     print("Город успешно добавлен")
 
 def delete_city():
-    city_id = int(input("Введите id города: "))
+    try:
+        city_id = int(input("Введите id города: "))
+    except:
+        print("invalid city id")
+        return
     for i in range(0, len(data)):
         if data[i]["id"] == city_id:
             del data[i]
@@ -89,7 +108,11 @@ data = open_file()
 
 while True:
     print(menu)
-    num = int(input("Выберите действие: "))
+    try:
+        num = int(input("Выберите действие: "))
+    except:
+        print("Invalid action")
+        continue
     actions += 1
     
     match num:
